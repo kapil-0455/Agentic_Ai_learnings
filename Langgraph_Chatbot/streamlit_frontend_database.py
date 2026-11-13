@@ -38,7 +38,7 @@ if "thread_id" not in st.session_state:
 
 # make a new list store threads
 if "chat_thread" not in st.session_state:
-    st.session_state["chat_thread"] = retrive_threads() # yahan sbhi threads repfresh honaee kae baad bhi dikhenghi
+    st.session_state["chat_thread"] = list(retrive_threads()) # yahan sbhi threads repfresh honaee kae baad bhi dikhenghi
 
 add_thread(st.session_state["thread_id"])
 
@@ -78,15 +78,19 @@ for message in st.session_state["message_history"]:
 user_input = st.chat_input("Type your chat")
 
 
-# st session
-# not refresh after every ewxwcution
-CONFIG = {"configurable": {"thread_id": st.session_state["thread_id"]}}
-
 if user_input:
     # add message to message history
     st.session_state["message_history"].append({"role": "user", "content": user_input})
     with st.chat_message("user"):
         st.text(user_input)
+
+    
+    # st session
+    # not refresh after every ewxwcution
+    CONFIG = {"configurable": {"thread_id": st.session_state["thread_id"]},
+            "metadata" : {"thread_id": st.session_state["thread_id"]},
+            "run_name" : "chatbot_tunrn"
+    }
 
     with st.chat_message("assistant"):
         # genertaor expression ()iskae andar use hua
